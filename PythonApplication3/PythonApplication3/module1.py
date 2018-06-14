@@ -179,3 +179,11 @@ def read_data_sets(train_dir, fake_data=False, one_hot=False, dtype=tf.float32):
                                  dtype=dtype)
   data_sets.test = DataSet(test_images, test_labels, dtype=dtype)
   return data_sets
+def open_images_convert_to_np_array(path):
+    img = PIL.Image.open(path).convert("L")
+    arr = numpy.array(img)
+    return arr
+def gen_image(arr):
+    two_d = (np.reshape(arr, (28, 28)) * 255).astype(np.uint8)
+    plt.imshow(two_d, interpolation='nearest')
+    return plt

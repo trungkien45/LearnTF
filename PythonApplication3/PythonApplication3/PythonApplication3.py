@@ -68,16 +68,12 @@ def cnn_model_fn(features, labels, mode):
       "accuracy": tf.metrics.accuracy(labels=labels, predictions=predictions["classes"])}
   return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
-def gen_image(arr):
-    two_d = (np.reshape(arr, (28, 28)) * 255).astype(np.uint8)
-    plt.imshow(two_d, interpolation='nearest')
-    return plt
 def main(unused_argv):
   # Load training and eval data
   #np.set_printoptions(threshold=np.nan)
-  mnist = module1.read_data_sets(".\\")
+  mnist = module1.read_data_sets(".\\samples\\")
   train_data = mnist.train.images # Returns np.array
-#  gen_image(train_data[2]).show()
+#  module1.gen_image(train_data[2]).show()
   train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
 #  print(train_labels[1])
   eval_data = mnist.test.images # Returns np.array
@@ -108,9 +104,12 @@ def main(unused_argv):
   print("res")
   
   print(eval_results)
+
+  imagetest = module1.open_images_convert_to_np_array(".\\test\\a.png")
+
   predict_input_fn = tf.estimator.inputs.numpy_input_fn(
-      x={"x": train_data},
-      num_epochs=1,
+      x={"x": imagetest},
+      num_epochs=1000,
       shuffle=False)
 
   predict_result = mnist_classifier.predict(input_fn=predict_input_fn)
